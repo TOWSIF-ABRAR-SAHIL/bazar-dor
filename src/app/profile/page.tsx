@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { authClient } from "@/app/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 
 export default function ProfilePage() {
   const { data: session, isPending } = authClient.useSession();
