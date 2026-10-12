@@ -44,17 +44,19 @@ export default function ProfilePage() {
     </div>
 
     <div className="mt-4 p-5 bg-white rounded-2xl border border-gray-200 shadow-sm">
-      <h3 className="text-sm font-bold text-gray-800 mb-3">তথ্য</h3>
-      <div className="space-y-2 mb-4 text-sm text-gray-600">
-        <p><span className="font-semibold text-gray-800">নাম:</span> {session.user.name}</p>
-        <p><span className="font-semibold text-gray-800">ইমেইল:</span> {session.user.email}</p>
+      <h3 className="text-sm font-bold text-gray-800 mb-4">তথ্য</h3>
+      <div className="mb-3">
+        <label className="block text-xs font-semibold text-gray-700 mb-1">নাম</label>
+        <div className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 bg-gray-50/50">
+          {session.user.name}
+        </div>
       </div>
 
       <Link
         href="/profile/update"
-        className="btn bg-[#047857] hover:bg-[#065f46] text-white w-full text-sm font-medium border-none"
+        className="btn w-full bg-[#047857] hover:bg-[#065f46] text-white text-sm font-medium border-none"
       >
-        তথ্য আপডেট করুন
+        আপডেট
       </Link>
     </div>
     </div>
