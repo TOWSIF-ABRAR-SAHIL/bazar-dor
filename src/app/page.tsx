@@ -13,23 +13,23 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchWithFallback("/products")
-      .then((res:any) => {
-        const data = res?.data || res || [];
-        setProducts(Array.isArray(data) ? data : []);
+      .then((res: any) => {
+        const data = Array.isArray(res) ? res : res?.data || [];
+        setProducts(data);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // Section A: Top 6 Risers
+  // Section A: Top 6 Risers (dir === "up")
   const risers = [...products]
-    .filter((p) => (p.changePercent || p.change_percent || 0) > 0)
-    .sort((a, b) => (b.changePercent || b.change_percent) - (a.changePercent || a.change_percent))
+    .filter((p) => p.change?.dir === "up" || (p.change?.pct || 0) > 0)
+    .sort((a, b) => (b.change?.pct || 0) - (a.change?.pct || 0))
     .slice(0, 6);
 
-  // Section B: Top 6 Fallers
+  // Section B: Top 6 Fallers (dir === "down")
   const fallers = [...products]
-    .filter((p) => (p.changePercent || p.change_percent || 0) < 0)
-    .sort((a, b) => (a.changePercent || a.change_percent) - (b.changePercent || b.change_percent))
+    .filter((p) => p.change?.dir === "down" || (p.change?.pct || 0) < 0)
+    .sort((a, b) => (a.change?.pct || 0) - (b.change?.pct || 0))
     .slice(0, 6);
 
   return (
@@ -45,12 +45,14 @@ export default function HomePage() {
           </div>
           {loading ? (
             <SkeletonLoader count={6} />
-          ) : (
+          ) : risers.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {risers.map((product) => (
                 <ProductCard key={product.id || product.slug} product={product} />
               ))}
             </div>
+          ) : (
+            <p className="text-xs text-gray-500 font-medium">আজ কোনো পণ্যের দাম বাড়েনি।</p>
           )}
         </section>
 
@@ -62,17 +64,19 @@ export default function HomePage() {
           </div>
           {loading ? (
             <SkeletonLoader count={6} />
-          ) : (
+          ) : fallers.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {fallers.map((product) => (
                 <ProductCard key={product.id || product.slug} product={product} />
               ))}
             </div>
+          ) : (
+            <p className="text-xs text-gray-500 font-medium">আজ কোনো পণ্যের দাম কমেনি।</p>
           )}
         </section>
 
         {/* Section C: সব পণ্য */}
-        <section id="all-products" className="pt-4">
+        <section id="সব-পণ্য" className="pt-4">
           <div className="mb-4">
             <h2 className="text-lg font-extrabold text-gray-900">সব পণ্য</h2>
             <p className="text-[11px] text-gray-500 font-medium mt-0.5">
