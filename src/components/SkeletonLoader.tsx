@@ -1,6 +1,6 @@
 export default function SkeletonLoader({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="bg-white rounded-2xl p-5 border border-gray-200/80 animate-pulse h-[140px] flex flex-col justify-between">
           <div className="flex items-center gap-3">

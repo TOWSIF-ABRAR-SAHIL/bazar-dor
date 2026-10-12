@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -15,14 +15,18 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
 
   const { data: session, isPending } = authClient.useSession();
+  const redirected = useRef(false);
 
   useEffect(() => {
     if (isPending) return;
 
-    // Protected Route Check
+    // Protected Route Check (ekbar toast + redirect)
     if (!session) {
-      toast.error("পণ্যের বিস্তারিত দেখতে অনুগ্রহ করে সাইন ইন করুন!");
-      router.push("/signin");
+      if (!redirected.current) {
+        redirected.current = true;
+        toast.error("পণ্যের বিস্তারিত দেখতে অনুগ্রহ করে সাইন ইন করুন!");
+        router.push("/signin");
+      }
       return;
     }
 
