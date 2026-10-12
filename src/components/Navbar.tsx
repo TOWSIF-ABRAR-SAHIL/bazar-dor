@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import { getBanglaDate, toBanglaDigits } from "@/lib/utils";
 import { fetchWithFallback } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
+import EmojiImage from "@/components/EmojiImage";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -96,13 +97,13 @@ export default function Navbar() {
         <div className="bg-white border-t border-b border-gray-200 py-2">
           <div className="max-w-7xl mx-auto px-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
             <Link href="/" className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${pathname === "/" ? "bg-[#047857] text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
-              🏠 হোম
+              <EmojiImage emoji="🏠" className="w-4 h-4" /> হোম
             </Link>
             {categories.map((cat: any) => {
               const isActive = pathname === `/category/${cat.slug}`;
               return (
                 <Link key={cat.slug} href={`/category/${cat.slug}`} className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${isActive ? "bg-[#047857] text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
-                  <span>{cat.icon}</span> <span>{cat.nameBn}</span>
+                  <EmojiImage emoji={cat.icon} className="w-4 h-4" /> <span>{cat.nameBn}</span>
                 </Link>
               );
             })}
@@ -119,7 +120,7 @@ export default function Navbar() {
               const dir = item.change?.dir || "flat";
               return (
                 <span key={idx} className="inline-flex items-center gap-1.5">
-                  <span>{item.image}</span>
+                  <EmojiImage emoji={item.image} className="w-4 h-4" />
                   <span className="font-semibold">{item.nameBn}</span>
                   <span className="text-gray-500">{toBanglaDigits(item.today)} টাকা/{item.unit}</span>
                   <span className={dir === "up" ? "text-red-600" : dir === "down" ? "text-[#047857]" : "text-gray-500"}>

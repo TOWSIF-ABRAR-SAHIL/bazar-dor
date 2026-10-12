@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { toBanglaDigits, formatBanglaPrice, getBanglaUnit } from "@/lib/utils";
+import EmojiImage from "@/components/EmojiImage";
 
 interface ProductProps {
   product: any;
@@ -25,8 +26,8 @@ export default function ProductCard({ product }: ProductProps) {
       <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group h-full">
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-[#F4F6F0] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
-              {emoji}
+            <div className="w-12 h-12 rounded-full bg-[#F4F6F0] flex items-center justify-center group-hover:scale-105 transition-transform">
+              <EmojiImage emoji={emoji} className="w-7 h-7" />
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm md:text-base group-hover:text-[#047857] transition-colors">

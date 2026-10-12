@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { getProductBySlugOrId } from "@/lib/api";
 import { toBanglaDigits, formatBanglaPrice, getBanglaUnit } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
+import EmojiImage from "@/components/EmojiImage";
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
@@ -91,8 +92,8 @@ export default function ProductDetailPage() {
       {/* Top Banner Card */}
       <div className="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-4xl">
-            {product.image || "🛒"}
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+            <EmojiImage emoji={product.image || "🛒"} className="w-9 h-9" />
           </div>
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900">{product.nameBn}</h1>
