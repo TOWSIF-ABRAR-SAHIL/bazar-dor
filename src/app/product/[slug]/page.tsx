@@ -21,11 +21,12 @@ export default function ProductDetailPage() {
     if (isPending) return;
 
     // Protected Route Check (ekbar toast + redirect)
+    // replace use korlam jate Back chaple abar ei page e na ese ager page e jay
     if (!session) {
       if (!redirected.current) {
         redirected.current = true;
         toast.error("পণ্যের বিস্তারিত দেখতে অনুগ্রহ করে সাইন ইন করুন!");
-        router.push("/signin");
+        router.replace("/signin");
       }
       return;
     }
