@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import SkeletonLoader from "@/components/SkeletonLoader";
+import EmojiImage from "@/components/EmojiImage";
 import { fetchWithFallback } from "@/lib/api";
 import { toBanglaDigits } from "@/lib/utils";
+
+const SORT_OPTIONS = [
+  { value: "default", label: "ডিফল্ট" },
+  { value: "low-to-high", label: "দাম: কম থেকে বেশি" },
+  { value: "high-to-low", label: "দাম: বেশি থেকে কম" },
+];
 
 export default function CategoryPage() {
   const { slug } = useParams();
@@ -15,6 +22,19 @@ export default function CategoryPage() {
   const [categoryInfo, setCategoryInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [sortType, setSortType] = useState("default");
+  const [sortOpen, setSortOpen] = useState(false);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  // Dropdown er baire click korle bondho
+  useEffect(() => {
+    const close = (e: MouseEvent) => {
+      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
+        setSortOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -68,8 +88,8 @@ export default function CategoryPage() {
       {/* Category Header & Sort Dropdown */}
       <div className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-[#F4F6F0] rounded-full flex items-center justify-center text-2xl">
-            {categoryInfo?.icon || products[0]?.categoryIcon || "📦"}
+          <div className="w-12 h-12 bg-[#F4F6F0] rounded-full flex items-center justify-center">
+            <EmojiImage emoji={categoryInfo?.icon || products[0]?.categoryIcon || "📦"} className="w-7 h-7" />
           </div>
           <div>
             <h1 className="text-lg font-bold text-gray-900">{categoryInfo?.nameBn || products[0]?.categoryNameBn || slug}</h1>
@@ -80,17 +100,34 @@ export default function CategoryPage() {
         {/* C1 Challenge: Sort Control */}
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold text-gray-600">সাজান:</span>
-          <div className="relative">
-            <select
-              value={sortType}
-              onChange={(e) => setSortType(e.target.value)}
-              className="text-xs border border-gray-200 rounded-lg pl-3 pr-8 py-1.5 focus:outline-none focus:border-[#047857] bg-white cursor-pointer font-medium text-gray-700 appearance-none"
+          <div className="relative" ref={sortRef}>
+            <button
+              type="button"
+              onClick={() => setSortOpen((v) => !v)}
+              className="text-xs border border-gray-200 rounded-lg pl-3 pr-8 py-1.5 bg-white cursor-pointer font-medium text-gray-700 flex items-center gap-2 min-w-[130px] justify-between hover:border-[#047857] transition-colors"
             >
-              <option value="default">ডিফল্ট</option>
-              <option value="low-to-high">দাম: কম থেকে বেশি</option>
-              <option value="high-to-low">দাম: বেশি থেকে কম</option>
-            </select>
-            <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+              {SORT_OPTIONS.find((o) => o.value === sortType)?.label}
+              <ChevronDown size={14} className={`text-gray-500 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+            </button>
+            {sortOpen && (
+              <div className="absolute right-0 mt-1 w-44 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+                {SORT_OPTIONS.map((o) => (
+                  <button
+                    key={o.value}
+                    type="button"
+                    onClick={() => {
+                      setSortType(o.value);
+                      setSortOpen(false);
+                    }}
+                    className={`w-full text-left text-xs font-medium px-3 py-2 hover:bg-gray-50 transition-colors ${
+                      sortType === o.value ? "text-[#047857] bg-emerald-50/50" : "text-gray-700"
+                    }`}
+                  >
+                    {o.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
