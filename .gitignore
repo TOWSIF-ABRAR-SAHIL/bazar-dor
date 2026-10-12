@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# assignment source files (do not commit)
+B14-A7-Bazar-Dor-main/
+
 # vercel
 .vercel
 
