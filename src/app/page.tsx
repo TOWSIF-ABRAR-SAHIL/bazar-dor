@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Hero from "@/components/Hero";
@@ -13,14 +13,18 @@ export default function HomePage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const toastShown = useRef(false);
 
   useEffect(() => {
     // Login / logout ses e welcome toast (ekbar)
+    if (toastShown.current) return;
     const params = new URLSearchParams(window.location.search);
     if (params.get("login") === "success") {
+      toastShown.current = true;
       toast.success("সফলভাবে সাইন ইন হয়েছে!");
       router.replace("/");
     } else if (params.get("logout") === "success") {
+      toastShown.current = true;
       toast.success("সফলভাবে সাইন আউট হয়েছে!");
       router.replace("/");
     }
