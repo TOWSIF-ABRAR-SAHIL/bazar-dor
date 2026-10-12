@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { fetchWithFallback, getProductBySlugOrId } from "@/lib/api";
+import { getProductBySlugOrId } from "@/lib/api";
 import { toBanglaDigits, formatBanglaPrice, getBanglaUnit } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 

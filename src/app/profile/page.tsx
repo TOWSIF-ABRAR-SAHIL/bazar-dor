@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function ProfilePage() {
   const { data: session, isPending } = authClient.useSession();
@@ -30,7 +31,12 @@ export default function ProfilePage() {
         <p className="text-xs text-gray-500">{session.user.email}</p>
       </div>
       <button
-        onClick={() => authClient.signOut().then(() => (window.location.href = "/"))}
+        onClick={() => {
+          authClient.signOut().then(() => {
+            toast.success("সফলভাবে সাইন আউট হয়েছে!");
+            setTimeout(() => (window.location.href = "/"), 800);
+          });
+        }}
         className="text-xs font-bold text-red-600 border border-red-200 hover:bg-red-50 px-4 py-2 rounded-xl transition-colors"
       >
         → সাইন আউট
