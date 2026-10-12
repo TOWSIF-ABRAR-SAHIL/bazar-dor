@@ -104,14 +104,14 @@ export default function SignUpPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <button
           type="button"
-          onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/" })}
+          onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/?login=success" })}
           className="btn btn-outline w-full text-sm font-normal border-gray-300"
         >
           Google দিয়ে চালিয়ে যান
         </button>
         <button
           type="button"
-          onClick={() => authClient.signIn.social({ provider: "github", callbackURL: "/" })}
+          onClick={() => authClient.signIn.social({ provider: "github", callbackURL: "/?login=success" })}
           className="btn btn-outline w-full text-sm font-normal border-gray-300"
         >
           GitHub দিয়ে চালিয়ে যান

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import SkeletonLoader from "@/components/SkeletonLoader";
@@ -10,6 +12,16 @@ import { toBanglaDigits } from "@/lib/utils";
 export default function HomePage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Social login ses e welcome toast (ekbar)
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("login") === "success") {
+      toast.success("সফলভাবে সাইন ইন হয়েছে!");
+      router.replace("/");
+    }
+  }, [router]);
 
   useEffect(() => {
     fetchWithFallback("/products")
