@@ -1,11 +1,29 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function ProfilePage() {
   const { data: session, isPending } = authClient.useSession();
+  const [name, setName] = useState("");
+  const [updating, setUpdating] = useState(false);
+
+  useEffect(() => {
+    if (session?.user?.name) setName(session.user.name);
+  }, [session]);
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUpdating(true);
+    const { error } = await authClient.updateUser({ name });
+    setUpdating(false);
+    if (error) {
+      toast.error(error.message || "আপডেট ব্যর্থ হয়েছে!");
+    } else {
+      toast.success("তথ্য সফলভাবে আপডেট হয়েছে!");
+    }
+  };
 
   if (isPending) {
     return <div className="p-10 text-center text-sm">লোডিং...</div>;
@@ -45,19 +63,26 @@ export default function ProfilePage() {
 
     <div className="mt-4 p-5 bg-white rounded-2xl border border-gray-200 shadow-sm">
       <h3 className="text-sm font-bold text-gray-800 mb-4">তথ্য</h3>
-      <div className="mb-3">
-        <label className="block text-xs font-semibold text-gray-700 mb-1">নাম</label>
-        <div className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 bg-gray-50/50">
-          {session.user.name}
+      <form onSubmit={handleUpdate}>
+        <div className="mb-3">
+          <label className="block text-xs font-semibold text-gray-700 mb-1">নাম</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="input input-bordered w-full text-sm"
+            required
+          />
         </div>
-      </div>
 
-      <Link
-        href="/profile/update"
-        className="btn w-full bg-[#047857] hover:bg-[#065f46] text-white text-sm font-medium border-none"
-      >
-        আপডেট
-      </Link>
+        <button
+          type="submit"
+          disabled={updating}
+          className="btn w-full bg-[#047857] hover:bg-[#065f46] text-white text-sm font-medium border-none"
+        >
+          {updating ? "আপডেট হচ্ছে..." : "আপডেট"}
+        </button>
+      </form>
     </div>
     </div>
   );
