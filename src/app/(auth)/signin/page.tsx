@@ -32,10 +32,12 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto my-12 p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-      <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">
-        সাইন ইন করুন
+    <div className="max-w-md mx-auto my-12 px-4">
+      <h2 className="text-2xl font-extrabold text-center mb-1 text-gray-900">
+        সাইন ইন
       </h2>
+      <p className="text-xs text-center text-gray-500 mb-6">বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।</p>
+    <div className="p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
 
       <form onSubmit={handleSignIn} className="space-y-4 mt-6">
         <div>
@@ -77,17 +79,17 @@ export default function SignInPage() {
 
       <div className="divider text-xs text-gray-400 my-4">অথবা</div>
 
-      <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <button
           type="button"
-          onClick={() => authClient.signIn.social({ provider: "google" })}
+          onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/" })}
           className="btn btn-outline w-full text-sm font-normal border-gray-300"
         >
           Google দিয়ে চালিয়ে যান
         </button>
         <button
           type="button"
-          onClick={() => authClient.signIn.social({ provider: "github" })}
+          onClick={() => authClient.signIn.social({ provider: "github", callbackURL: "/" })}
           className="btn btn-outline w-full text-sm font-normal border-gray-300"
         >
           GitHub দিয়ে চালিয়ে যান
@@ -100,9 +102,13 @@ export default function SignInPage() {
           href="/signup"
           className="text-[#047857] font-semibold hover:underline"
         >
-          রেজিস্ট্রেশন করুন
+          সাইন আপ করুন
         </Link>
       </p>
+    </div>
+      <Link href="/" className="block text-center text-[11px] text-gray-500 hover:text-emerald-700 mt-4">
+        ← হোম পেজে ফিরে যান
+      </Link>
     </div>
   );
 }

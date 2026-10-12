@@ -19,10 +19,27 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-md mx-auto my-12 p-6 bg-white rounded-xl border border-gray-200 shadow-sm text-center">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">আমার প্রোফাইল</h2>
-      
-      <div className="space-y-2 mb-6 text-sm text-gray-600">
+    <div className="max-w-2xl mx-auto my-10 px-4">
+      <h2 className="text-2xl font-extrabold text-gray-900">আমার প্রোফাইল</h2>
+      <p className="text-xs text-gray-500 mb-6 mt-1">আপনার অ্যাকাউন্টের তথ্য এখানে দেখুন।</p>
+
+    <div className="p-5 bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+      <img src={session.user.image || "https://i.ibb.co/mR40Bmy/user-avatar.png"} alt="avatar" className="w-16 h-16 rounded-2xl object-cover border border-gray-200" />
+      <div className="flex-1 text-center sm:text-left">
+        <p className="text-base font-bold text-gray-900">{session.user.name}</p>
+        <p className="text-xs text-gray-500">{session.user.email}</p>
+      </div>
+      <button
+        onClick={() => authClient.signOut().then(() => (window.location.href = "/"))}
+        className="text-xs font-bold text-red-600 border border-red-200 hover:bg-red-50 px-4 py-2 rounded-xl transition-colors"
+      >
+        → সাইন আউট
+      </button>
+    </div>
+
+    <div className="mt-4 p-5 bg-white rounded-2xl border border-gray-200 shadow-sm">
+      <h3 className="text-sm font-bold text-gray-800 mb-3">তথ্য</h3>
+      <div className="space-y-2 mb-4 text-sm text-gray-600">
         <p><span className="font-semibold text-gray-800">নাম:</span> {session.user.name}</p>
         <p><span className="font-semibold text-gray-800">ইমেইল:</span> {session.user.email}</p>
       </div>
@@ -33,6 +50,7 @@ export default function ProfilePage() {
       >
         তথ্য আপডেট করুন
       </Link>
+    </div>
     </div>
   );
 }

@@ -9,11 +9,20 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("পাসওয়ার্ড মিলছে না! আবার লিখুন।");
+      return;
+    }
+    if (password.length < 8) {
+      toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষর হতে হবে!");
+      return;
+    }
     setLoading(true);
     const { error } = await authClient.signUp.email({
       name,
@@ -31,9 +40,10 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto my-12 p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
-      <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">অ্যাকাউন্ট তৈরি করুন</h2>
+    <div className="max-w-md mx-auto my-12 px-4">
+      <h2 className="text-2xl font-extrabold text-center mb-1 text-gray-900">অ্যাকাউন্ট তৈরি করুন</h2>
       <p className="text-xs text-center text-gray-500 mb-6">বিনামূল্যে সাইন আপ করে সব বিস্তারিত দাম দেখুন</p>
+    <div className="p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
 
       <form onSubmit={handleSignUp} className="space-y-4">
         <div>
@@ -69,6 +79,17 @@ export default function SignUpPage() {
             required
           />
         </div>
+        <div>
+          <label className="block text-xs font-semibold text-gray-700 mb-1">পাসওয়ার্ড নিশ্চিত করুন</label>
+          <input
+            type="password"
+            placeholder="আবার লিখুন"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="input input-bordered w-full text-sm"
+            required
+          />
+        </div>
         <button
           type="submit"
           disabled={loading}
@@ -80,17 +101,17 @@ export default function SignUpPage() {
 
       <div className="divider text-xs text-gray-400 my-4">অথবা</div>
 
-      <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <button
           type="button"
-          onClick={() => authClient.signIn.social({ provider: "google" })}
+          onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/" })}
           className="btn btn-outline w-full text-sm font-normal border-gray-300"
         >
           Google দিয়ে চালিয়ে যান
         </button>
         <button
           type="button"
-          onClick={() => authClient.signIn.social({ provider: "github" })}
+          onClick={() => authClient.signIn.social({ provider: "github", callbackURL: "/" })}
           className="btn btn-outline w-full text-sm font-normal border-gray-300"
         >
           GitHub দিয়ে চালিয়ে যান
@@ -103,6 +124,10 @@ export default function SignUpPage() {
           সাইন ইন করুন
         </Link>
       </p>
+    </div>
+      <Link href="/" className="block text-center text-[11px] text-gray-500 hover:text-emerald-700 mt-4">
+        ← হোম পেজে ফিরে যান
+      </Link>
     </div>
   );
 }
