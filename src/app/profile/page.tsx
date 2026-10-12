@@ -51,8 +51,7 @@ export default function ProfilePage() {
       <button
         onClick={() => {
           authClient.signOut().then(() => {
-            toast.success("সফলভাবে সাইন আউট হয়েছে!");
-            setTimeout(() => (window.location.href = "/"), 800);
+            window.location.href = "/?logout=success";
           });
         }}
         className="text-xs font-bold text-red-600 border border-red-200 hover:bg-red-50 px-4 py-2 rounded-xl transition-colors"

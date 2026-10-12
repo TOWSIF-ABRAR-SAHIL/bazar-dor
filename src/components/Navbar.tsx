@@ -7,7 +7,6 @@ import { useState, useEffect, useRef } from "react";
 import { getBanglaDate, toBanglaDigits } from "@/lib/utils";
 import { fetchWithFallback } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
-import toast from "react-hot-toast";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -40,10 +39,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await authClient.signOut();
-    toast.success("সফলভাবে সাইন আউট হয়েছে!");
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 800);
+    setMenuOpen(false);
+    window.location.href = "/?logout=success";
   };
 
   return (

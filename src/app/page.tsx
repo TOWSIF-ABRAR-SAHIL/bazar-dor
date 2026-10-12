@@ -15,10 +15,13 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Social login ses e welcome toast (ekbar)
+    // Login / logout ses e welcome toast (ekbar)
     const params = new URLSearchParams(window.location.search);
     if (params.get("login") === "success") {
       toast.success("সফলভাবে সাইন ইন হয়েছে!");
+      router.replace("/");
+    } else if (params.get("logout") === "success") {
+      toast.success("সফলভাবে সাইন আউট হয়েছে!");
       router.replace("/");
     }
   }, [router]);
