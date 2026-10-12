@@ -1,15 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function UpdateProfilePage() {
   const { data: session } = authClient.useSession();
-  const [name, setName] = useState(session?.user?.name || "");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (session?.user?.name) setName(session.user.name);
+  }, [session]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
